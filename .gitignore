@@ -1,0 +1,8 @@
+node_modules/
+dist/
+allure-results/
+allure-report/
+.wdio-results/
+logs/
+*.log
+.DS_Store
