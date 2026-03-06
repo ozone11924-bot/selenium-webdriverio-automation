@@ -1,11 +1,7 @@
-import type { Options } from '@wdio/types';
+import fs from 'fs';
 
-export const config: Options.Testrunner = {
+export const config = {
   runner: 'local',
-  autoCompileOpts: {
-    autoCompile: true,
-    tsNodeOpts: { project: './tsconfig.json', transpileOnly: true },
-  },
   baseUrl: 'https://the-internet.herokuapp.com',
   specs: ['./src/tests/**/*.spec.ts'],
   suites: {
@@ -35,7 +31,12 @@ export const config: Options.Testrunner = {
       useCucumberStepReporter: false,
     }],
   ],
-  afterTest: async function (_test, _ctx, { passed }) {
+  onPrepare() {
+    if (!fs.existsSync('allure-results')) {
+      fs.mkdirSync('allure-results');
+    }
+  },
+  afterTest: async function (_test: any, _ctx: any, { passed }: { passed: boolean }) {
     if (!passed) await browser.takeScreenshot();
   },
 };
